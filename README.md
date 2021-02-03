@@ -1,6 +1,6 @@
 # BST
 
-**TODO: Add description**
+This is an implementation of a binary search tree and related functionality in Elixir.
 
 ## Installation
 
@@ -14,8 +14,3 @@ def deps do
   ]
 end
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/bst](https://hexdocs.pm/bst).
-
