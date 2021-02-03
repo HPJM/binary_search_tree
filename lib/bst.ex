@@ -107,4 +107,31 @@ defmodule BST do
     callback.(node.data)
     traverse(left, callback, :reverse)
   end
+
+  @doc """
+  Searches tree for node with given value.
+
+  ## Examples
+      iex> BST.Node.new(2) |> BST.insert(3) |> BST.search(3)
+      %BST.Node{data: 3}
+
+      iex> BST.Node.new(1) |> BST.insert(5) |> BST.search(30)
+      nil
+  """
+
+  def search(nil, _value) do
+    nil
+  end
+
+  def search(%Node{data: data} = node, value) when data == value do
+    node
+  end
+
+  def search(%Node{data: data, left: left}, value) when value < data do
+    search(left, value)
+  end
+
+  def search(%Node{data: data, right: right}, value) when value > data do
+    search(right, value)
+  end
 end

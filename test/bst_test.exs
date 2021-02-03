@@ -122,4 +122,26 @@ defmodule BSTTest do
       assert Agent.get(agent, & &1) == [15, 11, 10, 6, 5]
     end
   end
+
+  describe "search/2" do
+    test "search/2 finds an existing node in the tree", %{root: root} do
+      tree =
+        root
+        |> BST.insert(5)
+        |> BST.insert(11)
+        |> BST.insert(6)
+        |> BST.insert(15)
+
+      assert BST.search(tree, 15) == %BST.Node{data: 15}
+    end
+
+    test "search/2 returns nil if node can't be found", %{root: root} do
+      tree =
+        root
+        |> BST.insert(5)
+        |> BST.insert(3)
+
+      refute BST.search(tree, 30)
+    end
+  end
 end
