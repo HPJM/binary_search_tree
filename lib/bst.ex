@@ -151,4 +151,53 @@ defmodule BST do
     find_min(left)
   end
 
+  @doc """
+  Removes node from tree.
+
+  ## Examples
+      iex> tree = BST.Node.new(3) |> BST.insert(2) |> BST.insert(1) |> BST.delete(2)
+      iex> tree.left.data
+      1
+  """
+  def delete(nil, _search_value) do
+    nil
+  end
+
+  # Node has no children
+  def delete(%Node{data: data, left: nil, right: nil}, search_value)
+      when data == search_value do
+    nil
+  end
+
+  # Node has one child
+  def delete(%Node{data: data, left: %Node{} = left, right: nil}, search_value)
+      when data == search_value do
+    left
+  end
+
+  def delete(%Node{data: data, left: nil, right: %Node{} = right}, search_value)
+      when data == search_value do
+    right
+  end
+
+  # Node has two children
+  def delete(%Node{data: data, left: %Node{} = left, right: %Node{} = right}, search_value)
+      when data == search_value do
+    # Get left-most child of right
+    successor = find_min(right)
+    # Move successor up to this node, and replace right branch without it
+    right_without_successor = delete(right, successor.data)
+    Node.new(successor.data, left, right_without_successor)
+  end
+
+  # Recurse down left or right subtrees
+  def delete(%Node{data: data, left: left, right: right}, search_value)
+      when search_value < data do
+    Node.new(data, delete(left, search_value), right)
+  end
+
+  def delete(%Node{data: data, left: left, right: right}, search_value)
+      when search_value > data do
+    Node.new(data, left, delete(right, search_value))
+  end
 end

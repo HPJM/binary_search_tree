@@ -159,4 +159,63 @@ defmodule BSTTest do
     end
   end
 
+  describe "delete/2" do
+    test "delete/2 removes node with no children", %{root: root} do
+      tree =
+        root
+        |> BST.insert(5)
+
+      assert BST.delete(tree, 5) == root
+    end
+
+    test "delete/2 removes node with one left child", %{root: root} do
+      tree =
+        root
+        |> BST.insert(5)
+        |> BST.insert(3)
+
+      assert BST.delete(tree, 5) == %BST.Node{
+               data: 10,
+               left: %BST.Node{data: 3, left: nil, right: nil},
+               right: nil
+             }
+    end
+
+    test "delete/2 removes node with one right child", %{root: root} do
+      tree =
+        root
+        |> BST.insert(5)
+        |> BST.insert(30)
+
+      assert BST.delete(tree, 5) == %BST.Node{
+               data: 10,
+               left: nil,
+               right: %BST.Node{data: 30, left: nil, right: nil}
+             }
+    end
+
+    test "delete/2 removes node with both children", %{root: root} do
+      tree =
+        root
+        |> BST.insert(5)
+        |> BST.insert(30)
+        |> BST.insert(60)
+        |> BST.insert(61)
+        |> BST.insert(20)
+
+      assert BST.delete(tree, 30) == %BST.Node{
+               data: 10,
+               left: %BST.Node{
+                 data: 5,
+                 left: nil,
+                 right: nil
+               },
+               right: %BST.Node{
+                 data: 60,
+                 left: %BST.Node{data: 20, left: nil, right: nil},
+                 right: %BST.Node{data: 61, left: nil, right: nil}
+               }
+             }
+    end
+  end
 end
