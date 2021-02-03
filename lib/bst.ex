@@ -70,4 +70,41 @@ defmodule BST do
   defp do_verify?(%Node{left: left, right: right, data: data}, min, max) do
     do_verify?(left, min, data) and do_verify?(right, data, max)
   end
+
+  @doc """
+  Traverses tree, in one of four different modes.
+  """
+  def traverse(node, callback, mode \\ :in_order)
+
+  def traverse(nil, _callback, _mode) do
+    nil
+  end
+
+  def traverse(%Node{left: left, right: right} = node, callback, :in_order)
+      when is_function(callback, 1) do
+    traverse(left, callback, :in_order)
+    callback.(node.data)
+    traverse(right, callback, :in_order)
+  end
+
+  def traverse(%Node{left: left, right: right} = node, callback, :pre_order)
+      when is_function(callback, 1) do
+    callback.(node.data)
+    traverse(left, callback, :pre_order)
+    traverse(right, callback, :pre_order)
+  end
+
+  def traverse(%Node{left: left, right: right} = node, callback, :post_order)
+      when is_function(callback, 1) do
+    traverse(left, callback, :post_order)
+    traverse(right, callback, :post_order)
+    callback.(node.data)
+  end
+
+  def traverse(%Node{left: left, right: right} = node, callback, :reverse)
+      when is_function(callback, 1) do
+    traverse(right, callback, :reverse)
+    callback.(node.data)
+    traverse(left, callback, :reverse)
+  end
 end

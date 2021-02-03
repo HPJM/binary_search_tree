@@ -65,4 +65,61 @@ defmodule BSTTest do
       refute BST.verify?(tree)
     end
   end
+
+  describe "traverse/3" do
+    setup %{root: root} do
+      tree =
+        root
+        |> BST.insert(5)
+        |> BST.insert(11)
+        |> BST.insert(6)
+        |> BST.insert(15)
+
+      %{tree: tree}
+    end
+
+    test "traverse/3 traverses tree in order by default", %{tree: tree} do
+      {:ok, agent} = Agent.start(fn -> [] end)
+
+      BST.traverse(tree, &Agent.update(agent, fn collected -> collected ++ [&1] end))
+
+      assert Agent.get(agent, & &1) == [5, 6, 10, 11, 15]
+    end
+
+    test "traverse/3 can traverse tree pre-order", %{tree: tree} do
+      {:ok, agent} = Agent.start(fn -> [] end)
+
+      BST.traverse(
+        tree,
+        &Agent.update(agent, fn collected -> collected ++ [&1] end),
+        :pre_order
+      )
+
+      assert Agent.get(agent, & &1) == [10, 5, 6, 11, 15]
+    end
+
+    test "traverse/3 can traverse tree post-order", %{tree: tree} do
+      {:ok, agent} = Agent.start(fn -> [] end)
+
+      BST.traverse(
+        tree,
+        &Agent.update(agent, fn collected -> collected ++ [&1] end),
+        :post_order
+      )
+
+      assert Agent.get(agent, & &1) == [6, 5, 15, 11, 10]
+    end
+
+    test "traverse/3 can traverse tree reverse", %{tree: tree} do
+      {:ok, agent} = Agent.start(fn -> [] end)
+
+      BST.traverse(
+        tree,
+        &Agent.update(agent, fn collected -> collected ++ [&1] end),
+        :reverse
+      )
+
+      assert Agent.get(agent, & &1) == [15, 11, 10, 6, 5]
+    end
+  end
 end
