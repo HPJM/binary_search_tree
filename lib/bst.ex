@@ -134,4 +134,21 @@ defmodule BST do
   def search(%Node{data: data, right: right}, value) when value > data do
     search(right, value)
   end
+
+  @doc """
+  Retrieves smallest node in tree.
+
+  ## Examples
+      iex> tree = BST.Node.new(200) |> BST.insert(2) |> BST.insert(33) |> BST.insert(3) |> BST.find_min()
+      iex> tree.data
+      2
+  """
+  def find_min(%Node{left: nil} = node) do
+    node
+  end
+
+  def find_min(%Node{left: left}) do
+    find_min(left)
+  end
+
 end

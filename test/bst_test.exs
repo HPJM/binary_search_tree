@@ -144,4 +144,19 @@ defmodule BSTTest do
       refute BST.search(tree, 30)
     end
   end
+
+  describe "find_min/1" do
+    test "gets smallest node on left subtree", %{root: root} do
+      tree =
+        root
+        |> BST.insert(5)
+        |> BST.insert(11)
+        |> BST.insert(6)
+        |> BST.insert(15)
+
+      min = BST.find_min(tree)
+      assert min.data == 5
+    end
+  end
+
 end
