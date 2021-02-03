@@ -34,20 +34,20 @@ defmodule BST do
   end
 
   # Lower value than current node - recurse down left subtree
-  def insert(%Node{left: left, right: right, data: data}, to_insert)
-      when to_insert < data do
-    new(data, insert(left, to_insert), right)
+  def insert(%Node{left: left, right: right, data: data}, value)
+      when value < data do
+    new(data, insert(left, value), right)
   end
 
   # Greater value than current node - recurse down right subtree
-  def insert(%Node{left: left, right: right, data: data}, to_insert)
-      when to_insert > data do
-    new(data, left, insert(right, to_insert))
+  def insert(%Node{left: left, right: right, data: data}, value)
+      when value > data do
+    new(data, left, insert(right, value))
   end
 
   # Equal - just return node
-  def insert(%Node{left: left, right: right, data: parent_data}, _data) do
-    new(parent_data, left, right)
+  def insert(%Node{left: left, right: right, data: data}, _value) do
+    new(data, left, right)
   end
 
   @doc """
@@ -171,30 +171,30 @@ defmodule BST do
       iex> tree.left.data
       1
   """
-  def delete(nil, _search_value) do
+  def delete(nil, _value) do
     nil
   end
 
   # Node has no children
-  def delete(%Node{data: data, left: nil, right: nil}, search_value)
-      when data == search_value do
+  def delete(%Node{data: data, left: nil, right: nil}, value)
+      when data == value do
     nil
   end
 
   # Node has one child
-  def delete(%Node{data: data, left: %Node{} = left, right: nil}, search_value)
-      when data == search_value do
+  def delete(%Node{data: data, left: %Node{} = left, right: nil}, value)
+      when data == value do
     left
   end
 
-  def delete(%Node{data: data, left: nil, right: %Node{} = right}, search_value)
-      when data == search_value do
+  def delete(%Node{data: data, left: nil, right: %Node{} = right}, value)
+      when data == value do
     right
   end
 
   # Node has two children
-  def delete(%Node{data: data, left: %Node{} = left, right: %Node{} = right}, search_value)
-      when data == search_value do
+  def delete(%Node{data: data, left: %Node{} = left, right: %Node{} = right}, value)
+      when data == value do
     # Get left-most child of right
     successor = find_min(right)
     # Move successor up to this node, and replace right branch without it
@@ -203,13 +203,13 @@ defmodule BST do
   end
 
   # Recurse down left or right subtrees
-  def delete(%Node{data: data, left: left, right: right}, search_value)
-      when search_value < data do
-    new(data, delete(left, search_value), right)
+  def delete(%Node{data: data, left: left, right: right}, value)
+      when value < data do
+    new(data, delete(left, value), right)
   end
 
-  def delete(%Node{data: data, left: left, right: right}, search_value)
-      when search_value > data do
-    new(data, left, delete(right, search_value))
+  def delete(%Node{data: data, left: left, right: right}, value)
+      when value > data do
+    new(data, left, delete(right, value))
   end
 end
