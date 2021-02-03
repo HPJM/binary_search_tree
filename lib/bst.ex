@@ -6,11 +6,23 @@ defmodule BST do
   alias BST.Node
 
   @doc """
+  Creates new node
+
+  ## Examples
+      iex> BST.new(2)
+      %BST.Node{data: 2}
+
+  """
+  def new(data, left \\ nil, right \\ nil) do
+    Node.new(data, left, right)
+  end
+
+  @doc """
   Inserts a node into the tree.
 
   ## Examples
 
-      iex> root = BST.Node.new(2)
+      iex> root = BST.new(2)
       iex> BST.insert(root, 3)
       %BST.Node{data: 2, right: %BST.Node{data: 3}}
 
@@ -18,24 +30,24 @@ defmodule BST do
 
   # At leaf - return new node
   def insert(nil, data) do
-    Node.new(data)
+    new(data)
   end
 
   # Lower value than current node - recurse down left subtree
   def insert(%Node{left: left, right: right, data: data}, to_insert)
       when to_insert < data do
-    Node.new(data, insert(left, to_insert), right)
+    new(data, insert(left, to_insert), right)
   end
 
   # Greater value than current node - recurse down right subtree
   def insert(%Node{left: left, right: right, data: data}, to_insert)
       when to_insert > data do
-    Node.new(data, left, insert(right, to_insert))
+    new(data, left, insert(right, to_insert))
   end
 
   # Equal - just return node
   def insert(%Node{left: left, right: right, data: parent_data}, _data) do
-    Node.new(parent_data, left, right)
+    new(parent_data, left, right)
   end
 
   @doc """
@@ -43,7 +55,7 @@ defmodule BST do
 
   ## Examples
 
-      iex> BST.Node.new(2) |> BST.insert(3) |> BST.verify?()
+      iex> BST.new(2) |> BST.insert(3) |> BST.verify?()
       true
 
   """
@@ -112,10 +124,10 @@ defmodule BST do
   Searches tree for node with given value.
 
   ## Examples
-      iex> BST.Node.new(2) |> BST.insert(3) |> BST.search(3)
+      iex> BST.new(2) |> BST.insert(3) |> BST.search(3)
       %BST.Node{data: 3}
 
-      iex> BST.Node.new(1) |> BST.insert(5) |> BST.search(30)
+      iex> BST.new(1) |> BST.insert(5) |> BST.search(30)
       nil
   """
 
@@ -139,7 +151,7 @@ defmodule BST do
   Retrieves smallest node in tree.
 
   ## Examples
-      iex> tree = BST.Node.new(200) |> BST.insert(2) |> BST.insert(33) |> BST.insert(3) |> BST.find_min()
+      iex> tree = BST.new(200) |> BST.insert(2) |> BST.insert(33) |> BST.insert(3) |> BST.find_min()
       iex> tree.data
       2
   """
@@ -155,7 +167,7 @@ defmodule BST do
   Removes node from tree.
 
   ## Examples
-      iex> tree = BST.Node.new(3) |> BST.insert(2) |> BST.insert(1) |> BST.delete(2)
+      iex> tree = BST.new(3) |> BST.insert(2) |> BST.insert(1) |> BST.delete(2)
       iex> tree.left.data
       1
   """
@@ -187,17 +199,17 @@ defmodule BST do
     successor = find_min(right)
     # Move successor up to this node, and replace right branch without it
     right_without_successor = delete(right, successor.data)
-    Node.new(successor.data, left, right_without_successor)
+    new(successor.data, left, right_without_successor)
   end
 
   # Recurse down left or right subtrees
   def delete(%Node{data: data, left: left, right: right}, search_value)
       when search_value < data do
-    Node.new(data, delete(left, search_value), right)
+    new(data, delete(left, search_value), right)
   end
 
   def delete(%Node{data: data, left: left, right: right}, search_value)
       when search_value > data do
-    Node.new(data, left, delete(right, search_value))
+    new(data, left, delete(right, search_value))
   end
 end

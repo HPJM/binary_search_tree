@@ -8,6 +8,18 @@ defmodule BSTTest do
     %{root: Node.new(10)}
   end
 
+  describe "new/3" do
+    test "new/3 creates a node with defaults" do
+      assert BST.new(2) == %BST.Node{data: 2}
+    end
+
+    test "new/3 creates a node with children" do
+      left = BST.new(1)
+      right = BST.new(3)
+      assert BST.new(2, left, right) == %BST.Node{data: 2, left: left, right: right}
+    end
+  end
+
   describe "insert/2" do
     test "insert/2 inserts on left correctly", %{root: root} do
       tree = BST.insert(root, 5)
