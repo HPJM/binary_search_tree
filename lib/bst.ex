@@ -227,4 +227,18 @@ defmodule BST do
       when value > data do
     new(data, left, delete(right, value))
   end
+
+  @doc """
+  Removes multiple nodes from tree.
+
+  ## Examples
+
+      iex> tree = BST.new(2) |> BST.insert_many([5, 50])
+      iex> BST.delete_many(tree, [5, 50])
+      %BST.Node{data: 2, left: nil, right: nil}
+
+  """
+  def delete_many(%Node{} = root, nodes) when is_list(nodes) do
+    Enum.reduce(nodes, root, &delete(&2, &1))
+  end
 end

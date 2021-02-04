@@ -246,4 +246,13 @@ defmodule BSTTest do
              }
     end
   end
+
+  describe "delete_many/2" do
+    test "delete_many/2 deletes multiple nodes", %{root: root} do
+      values = [5, 500, 5000]
+      tree = BST.insert_many(root, values) |> BST.delete_many(values)
+
+      assert tree == root
+    end
+  end
 end
