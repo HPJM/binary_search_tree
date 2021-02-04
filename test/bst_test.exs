@@ -52,6 +52,22 @@ defmodule BSTTest do
     end
   end
 
+  describe "insert_many/2" do
+    test "insert_many/2 inserts multiple nodes on root", %{root: root} do
+      tree = BST.insert_many(root, [5, 500, 5000])
+
+      assert tree == %BST.Node{
+               data: 10,
+               left: %BST.Node{data: 5, left: nil, right: nil},
+               right: %BST.Node{
+                 data: 500,
+                 left: nil,
+                 right: %BST.Node{data: 5000, left: nil, right: nil}
+               }
+             }
+    end
+  end
+
   describe "verify?/1" do
     test "verify?/1 accepts valid trees", %{root: root} do
       tree =

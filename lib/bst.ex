@@ -51,6 +51,21 @@ defmodule BST do
   end
 
   @doc """
+  Inserts multiple nodes into the tree.
+
+  ## Examples
+
+      iex> root = BST.new(2)
+      iex> tree = BST.insert_many(root, [5, 50])
+      iex> tree.right.right.data
+      50
+
+  """
+  def insert_many(%Node{} = root, nodes) when is_list(nodes) do
+    Enum.reduce(nodes, root, &insert(&2, &1))
+  end
+
+  @doc """
   Verifies the tree is valid.
 
   ## Examples
