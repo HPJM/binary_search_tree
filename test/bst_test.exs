@@ -151,6 +151,29 @@ defmodule BSTTest do
     end
   end
 
+  describe "collect/2" do
+    setup %{root: root} do
+      tree =
+        root
+        |> BST.insert(5)
+        |> BST.insert(11)
+        |> BST.insert(6)
+        |> BST.insert(15)
+
+      %{tree: tree}
+    end
+
+    test "collect/2 collects from tree in order by default", %{tree: tree} do
+      assert BST.collect(tree) == [5, 6, 10, 11, 15]
+    end
+
+    test "collect/2 collects from tree in any traversal mode", %{tree: tree} do
+      assert BST.collect(tree, :pre_order) == [10, 5, 6, 11, 15]
+      assert BST.collect(tree, :post_order) == [6, 5, 15, 11, 10]
+      assert BST.collect(tree, :reverse) == [15, 11, 10, 6, 5]
+    end
+  end
+
   describe "search/2" do
     test "search/2 finds an existing node in the tree", %{root: root} do
       tree =

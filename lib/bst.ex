@@ -3,6 +3,8 @@ defmodule BST do
   Handles operations for working with binary search trees.
   """
 
+  @modes ~w(in_order pre_order post_order reverse)a
+
   alias BST.Node
 
   @doc """
@@ -133,6 +135,28 @@ defmodule BST do
     traverse(right, callback, :reverse)
     callback.(node.data)
     traverse(left, callback, :reverse)
+  end
+
+  @doc """
+  Collects node values from tree into a list, given a traversal mode.
+
+  ## Examples
+      iex> tree = BST.new(2) |> BST.insert_many([20, 200])
+      iex> tree |> BST.collect()
+      [2, 20, 200]
+      iex> tree |> BST.collect(:reverse)
+      [200, 20, 2]
+  """
+  def collect(%Node{} = node, mode \\ :in_order) when mode in @modes do
+    {:ok, pid} = Agent.start(fn -> [] end)
+
+    traverse(node, &do_collect(pid, &1), mode)
+
+    Agent.get(pid, & &1) |> Enum.reverse()
+  end
+
+  defp do_collect(pid, value) when is_pid(pid) do
+    Agent.update(pid, &[value | &1])
   end
 
   @doc """
